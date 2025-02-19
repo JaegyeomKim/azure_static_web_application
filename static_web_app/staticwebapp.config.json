@@ -1,0 +1,10 @@
+{
+  "routes": [
+    { "route": "/", "serve": "/index.html" },
+    { "route": "/services", "serve": "/services.html" },
+    { "route": "/about", "serve": "/about.html" },
+    { "route": "/contact", "serve": "/contact.html" },
+    { "route": "/404", "serve": "/index.html" },
+    { "route": "/*", "serve": "/index.html" }
+  ]
+}

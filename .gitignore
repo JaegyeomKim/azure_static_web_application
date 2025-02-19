@@ -162,5 +162,3 @@ cython_debug/
 
 
 forms/
-static_web_app/assets/img/
-static_web_app/staticwebapp.config.json
