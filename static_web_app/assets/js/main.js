@@ -159,23 +159,4 @@
   new PureCounter();
 
 
-
-  /**
-   * 🚀 URL 접근 제한 기능 추가 (허용된 페이지 목록)
-   */
-  document.addEventListener("DOMContentLoaded", function () {
-    const allowedPages = ["index", "services", "about", "contact"]; // 허용된 페이지 목록
-    let currentPage = window.location.pathname.split("/").pop().replace(".html", ""); 
-
-    // 🚀 "/"(루트)로 접근하면 "/index.html"로 자동 리디렉션
-    if (window.location.pathname === "/" || window.location.pathname.endsWith("/static_web_app/")) {
-        window.location.href = "/static_web_app/index.html";
-    }
-
-    // ❌ 허용되지 않은 페이지는 "/index.html"로 강제 이동
-    if (!allowedPages.includes(currentPage)) {
-        window.location.href = "/static_web_app/index.html";
-    }
-});
-
 })();
