@@ -190,6 +190,8 @@
             try {
               let response = await fetch("https://script.google.com/macros/s/AKfycbzUj9JL4nc3MtznPB37-_finEBBibRNgQaSowYCoGU/dev", {
                 method: "POST",
+                mode: "cors",  // ✅ CORS 허용
+                credentials: "omit",  // ✅ 인증 정보 제외 (Google Apps Script는 인증 필요 없음)
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
               });
