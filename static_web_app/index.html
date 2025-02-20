@@ -166,73 +166,67 @@
             </div>
           </form>
           
-          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("quote-form").addEventListener("submit", async function(event) {
-              event.preventDefault();
-              
-              let formData = {
-                category: "Quote",
-                name: this.name.value.trim(),
-                email: this.email.value.trim(),
-                phone: this.phone.value.trim() || "",
-                message: this.message.value.trim()
-              };
-          
-              let statusDiv = document.getElementById("quote-form-status");
-              let submitBtn = document.getElementById("quote-submit-btn");
-          
-              // 🔹 로딩 상태 표시
-              submitBtn.disabled = true;
-              submitBtn.innerText = "Sending...";
-              statusDiv.innerText = "Processing your request...";
-              statusDiv.style.color = "blue";
-          
-              try {
-                let response = await fetch("https://script.google.com/macros/s/AKfycbx3k-fMB6EiN_QLHRchjX-FZnWFbzN6yVSLvxNsH68M5o0C4laPfcsMdRCkFO0sgUpM/exec", {
-                  method: "POST",
-                  mode: "cors",  // ✅ CORS 문제 해결 시도 (필요하면 "no-cors"로 변경)
-                  credentials: "omit",  // ✅ 인증 정보 제외 ("same-origin" 테스트 가능)
-                  headers: { "Content-Type": "application/json" },  // ✅ JSON 데이터로 전송
-                  body: JSON.stringify(formData)
-                });
-          
-                // ✅ 응답이 Opaque(읽을 수 없는 경우)라면 성공 처리
-                if (response.type === "opaque") {
-                  statusDiv.innerText = "Request sent successfully!";
-                  statusDiv.style.color = "green";
-                  this.reset();
-                  return;
-                }
-          
-                // ✅ 응답이 정상인지 확인
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-          
-                let data = await response.json();
-                console.log("Server Response:", data);
-          
-                if (data.status === "success") {
-                  statusDiv.innerText = "Thank you! Your request has been received.";
-                  statusDiv.style.color = "green";
-                  this.reset();
-                } else {
-                  statusDiv.innerText = "Error: " + (data.message || "Failed to send request.");
-                  statusDiv.style.color = "red";
-                }
-              } catch (error) {
-                statusDiv.innerText = "Network error: " + error.message;
-                statusDiv.style.color = "red";
-                console.error("Fetch error:", error.message);
-              } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Submit Request";
-              }
-            });
-          });
-          
-          </script>
+          <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+  const CLIENT_ID = "410988127190-mj88hhuf6aq7q9hpvu1cd9fo05u4g0o2.apps.googleusercontent.com";
+  const REDIRECT_URI = "https://lively-coast-0619ee71e.4.azurestaticapps.net/oauth2callback";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPttEotWnjRYVJMNpxCe90fD9iVC3xFmA6ksnHwSeT1k3V-IZJyG9lQHTAJZpZEUYksQ/exec";
+
+  let accessToken = "";
+
+  function handleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+
+    fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" + response.credential)
+      .then(res => res.json())
+      .then(data => {
+        console.log("User Info:", data);
+        accessToken = response.credential;
+        document.getElementById("status").innerText = "✅ Signed in as: " + data.email;
+        document.getElementById("send-data-btn").disabled = false;
+      })
+      .catch(error => console.error("OAuth Error:", error));
+  }
+
+  function sendDataToGAS() {
+    const formData = {
+      category: "Quote",
+      name: "John Doe",
+      email: "john@example.com",
+      phone: "123-456-7890",
+      message: "Test Message"
+    };
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Server Response:", data);
+      document.getElementById("status").innerText = "✅ Data Sent!";
+    })
+    .catch(error => console.error("Fetch Error:", error));
+  }
+
+  window.onload = function () {
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("google-signin-btn"),
+      { theme: "outline", size: "large" }
+    );
+
+    document.getElementById("send-data-btn").addEventListener("click", sendDataToGAS);
+  };
+</script>
+
           
           </div><!-- End Quote Form -->
 
