@@ -1,4 +1,8 @@
 {
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/css/*", "/js/*", "/images/*", "/vendor/*"]
+  },
   "routes": [
     {
       "route": "/",
@@ -15,6 +19,26 @@
     {
       "route": "/contact",
       "serve": "/contact.html"
+    },
+    {
+      "route": "/assets/*",
+      "serve": "/assets/"
+    },
+    {
+      "route": "/css/*",
+      "serve": "/css/"
+    },
+    {
+      "route": "/js/*",
+      "serve": "/js/"
+    },
+    {
+      "route": "/images/*",
+      "serve": "/images/"
+    },
+    {
+      "route": "/vendor/*",
+      "serve": "/vendor/"
     },
     {
       "route": "/*",
