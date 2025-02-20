@@ -6,5 +6,16 @@
     { "route": "/contact", "serve": "/contact.html" },
     { "route": "/404", "serve": "/index.html" },
     { "route": "/*", "serve": "/index.html" }
-  ]
+  ],
+  "responseOverrides": {
+    "400": { "redirect": "/index.html", "statusCode": 200 },
+    "401": { "redirect": "/index.html", "statusCode": 200 },
+    "403": { "redirect": "/index.html", "statusCode": 200 },
+    "404": { "redirect": "/index.html", "statusCode": 200 }
+  },
+  "globalHeaders": {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type"
+  }
 }
