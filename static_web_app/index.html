@@ -167,54 +167,63 @@
           </form>
           
           <script>
-          document.getElementById("quote-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
-          
-            let formData = {
-              category: "Quote",  // 📌 Category 추가
-              name: this.name.value.trim(),
-              email: this.email.value.trim(),
-              phone: this.phone.value.trim() || "",  // 📌 phone이 없으면 빈 값
-              message: this.message.value.trim()
-            };
-          
-            let statusDiv = document.getElementById("quote-form-status");
-            let submitBtn = document.getElementById("quote-submit-btn");
-          
-            // 🔹 로딩 상태 표시
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Sending...";
-            statusDiv.innerText = "Processing your request...";
-            statusDiv.style.color = "blue";
-          
-            try {
-              let response = await fetch("https://script.google.com/macros/s/AKfycbzc4hltRQvdwZwJmVYuYOyKPTZGSbl5tM_PHxxxAfc3aVpv6BR8BDpA44DakM4PAnGp/exec", {
-                method: "POST",
-                mode: "cors",  // ✅ CORS 허용
-                credentials: "omit",  // ✅ 인증 정보 제외 (Google Apps Script는 인증 필요 없음)
-                body: JSON.stringify(DATA),  // ✅ JSON 데이터 전송
-                headers: {
-                  "Content-Type": "application/json"  // ✅ JSON 데이터로 전송
-                },
+            document.addEventListener("DOMContentLoaded", function () {
+              document.getElementById("quote-form").addEventListener("submit", async function(event) {
+                event.preventDefault();
+                
+                let formData = {
+                  category: "Quote",  // 📌 Category 추가
+                  name: this.name.value.trim(),
+                  email: this.email.value.trim(),
+                  phone: this.phone.value.trim() || "",  // 📌 phone이 없으면 빈 값
+                  message: this.message.value.trim()
+                };
+            
+                let statusDiv = document.getElementById("quote-form-status");
+                let submitBtn = document.getElementById("quote-submit-btn");
+            
+                // 🔹 로딩 상태 표시
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Sending...";
+                statusDiv.innerText = "Processing your request...";
+                statusDiv.style.color = "blue";
+            
+                try {
+                  let response = await fetch("https://script.google.com/macros/s/AKfycbzc4hltRQvdwZwJmVYuYOyKPTZGSbl5tM_PHxxxAfc3aVpv6BR8BDpA44DakM4PAnGp/exec", {
+                    method: "POST",
+                    mode: "cors",  // ✅ CORS 허용
+                    credentials: "omit",  // ✅ 인증 정보 제외 (Google Apps Script는 인증 필요 없음)
+                    headers: { "Content-Type": "application/json" },  // ✅ JSON 데이터로 전송
+                    body: JSON.stringify(formData)  // ✅ JSON 데이터 전송
+                  });
+            
+                  // ✅ 응답이 정상인지 확인
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+            
+                  let data = await response.json();
+                  console.log("Server Response:", data);
+            
+                  if (data.status === "success") {
+                    statusDiv.innerText = "Thank you! Your request has been received.";
+                    statusDiv.style.color = "green";
+                    this.reset();
+                  } else {
+                    statusDiv.innerText = "Error: " + (data.message || "Failed to send request.");
+                    statusDiv.style.color = "red";
+                  }
+                } catch (error) {
+                  statusDiv.innerText = "Network error: " + error.message;
+                  statusDiv.style.color = "red";
+                  console.error("Fetch error:", error.message);
+                } finally {
+                  submitBtn.disabled = false;
+                  submitBtn.innerText = "Submit Request";
+                }
               });
-          
-              let data = await response.json();
-              if (data.status === "success") {
-                statusDiv.innerText = "Thank you! Your request has been received.";
-                statusDiv.style.color = "green";
-                this.reset();
-              } else {
-                statusDiv.innerText = "Error: " + (data.message || "Failed to send request.");
-                statusDiv.style.color = "red";
-              }
-            } catch (error) {
-              statusDiv.innerText = "Network error. Please try again.";
-              statusDiv.style.color = "red";
-            } finally {
-              submitBtn.disabled = false;
-              submitBtn.innerText = "Submit Request";
-            }
-          });
+            });
+            
           </script>
           
           </div><!-- End Quote Form -->
