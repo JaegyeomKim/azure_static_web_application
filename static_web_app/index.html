@@ -188,12 +188,14 @@
             statusDiv.style.color = "blue";
           
             try {
-              let response = await fetch("https://script.google.com/macros/s/AKfycbywz0XcKs6AfVnJuUF7otodyftoY8sX60vXiSXUpd3qh8laF-A5IkjwVazbvjLRWwiz/exec", {
+              let response = await fetch("https://script.google.com/macros/s/AKfycbzc4hltRQvdwZwJmVYuYOyKPTZGSbl5tM_PHxxxAfc3aVpv6BR8BDpA44DakM4PAnGp/exec", {
                 method: "POST",
                 mode: "cors",  // ✅ CORS 허용
                 credentials: "omit",  // ✅ 인증 정보 제외 (Google Apps Script는 인증 필요 없음)
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(DATA),  // ✅ JSON 데이터 전송
+                headers: {
+                  "Content-Type": "application/json"  // ✅ JSON 데이터로 전송
+                },
               });
           
               let data = await response.json();
