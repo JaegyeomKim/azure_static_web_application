@@ -1,6 +1,7 @@
 {
   "navigationFallback": {
-    "rewrite": "/index.html"
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/css/*", "/js/*", "/images/*", "/vendor/*"]
   },
   "routes": [
     {
@@ -24,11 +25,18 @@
       "rewrite": "/index.html"
     }
   ],
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
-    }
+  "mimeTypes": {
+    ".html": "text/html",
+    ".css": "text/css",
+    ".js": "application/javascript",
+    ".json": "application/json",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".svg": "image/svg+xml",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+    ".ttf": "font/ttf"
   },
   "globalHeaders": {
     "Access-Control-Allow-Origin": "*",
