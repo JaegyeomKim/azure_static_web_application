@@ -2,9 +2,7 @@
   "routes": [
     {
       "route": "/",
-      "serve": "/index.html",
-      "exclude": ["/services", "/about", "/contact", "/contact.html"]
-      
+      "serve": "/index.html"
     },
     {
       "route": "/services",
@@ -17,26 +15,6 @@
     {
       "route": "/contact",
       "serve": "/contact.html"
-    },
-    {
-      "route": "/assets/*",
-      "serve": "/assets/"
-    },
-    {
-      "route": "/css/*",
-      "serve": "/css/"
-    },
-    {
-      "route": "/js/*",
-      "serve": "/js/"
-    },
-    {
-      "route": "/images/*",
-      "serve": "/images/"
-    },
-    {
-      "route": "/vendor/*",
-      "serve": "/vendor/"
     },
     {
       "route": "/*",
