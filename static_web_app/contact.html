@@ -121,64 +121,75 @@
           </iframe>
                     </div><!-- End Google Maps -->
                     <div class="col-lg-6">
+
+
                       <form id="contact-form" class="php-email-form">
                         <div class="row gy-4">
                           <div class="col-md-6">
-                            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                            <input type="text" id="contact-name" name="name" class="form-control" placeholder="Your Name" required>
                           </div>
                           <div class="col-md-6">
-                            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                            <input type="email" id="contact-email" name="email" class="form-control" placeholder="Your Email" required>
                           </div>
                           <div class="col-md-12">
-                            <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                            <input type="text" id="contact-subject" name="subject" class="form-control" placeholder="Subject" required>
                           </div>
                           <div class="col-md-12">
-                            <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                            <textarea id="contact-message" class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
                           </div>
                           <div class="col-md-12 text-center">
-                            <div id="form-status"></div>
+                            <div id="contact-status"></div> <!-- ✅ Fixed ID -->
                             <button type="submit">Send Message</button>
                           </div>
                         </div>
                       </form>
                       
                       <script>
-                      document.getElementById("contact-form").addEventListener("submit", async function(event) {
-                        event.preventDefault();
+                        const AZURE_FUNCTION_URL = "https://emailtriggerandsavedatatogoogle.azurewebsites.net/api/EmailTrigger";
                       
-                        let formData = {
-                          category: "Contact",  // 📌 Category 추가
-                          name: this.name.value.trim(),
-                          email: this.email.value.trim(),
-                          subject: this.subject.value.trim(),
-                          phone: "",  // 📌 phone 필드는 비워둠
-                          message: this.message.value.trim()
-                        };
+                        function sendContactRequest() {
+                          let name = document.getElementById("contact-name").value.trim();
+                          let email = document.getElementById("contact-email").value.trim();
+                          let subject = document.getElementById("contact-subject").value.trim();
+                          let message = document.getElementById("contact-message").value.trim();
                       
-                        let statusDiv = document.getElementById("form-status");
+                          if (!name || !email || !subject || !message) {
+                            alert("Please fill in all required fields.");
+                            return;
+                          }
                       
-                        try {
-                          let response = await fetch("https://script.google.com/macros/s/AKfycbywz0XcKs6AfVnJuUF7otodyftoY8sX60vXiSXUpd3qh8laF-A5IkjwVazbvjLRWwiz/exec", {
+                          let formData = {
+                            category: "Contact",
+                            name: name,
+                            email: email,
+                            phone: "",  
+                            subject: subject,
+                            message: message
+                          };
+                      
+                          fetch(AZURE_FUNCTION_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(formData)
+                          })
+                          .then(response => response.text())
+                          .then(data => {
+                            console.log("Server Response:", data);
+                            document.getElementById("contact-status").innerText = "✅ Contact request sent successfully!";
+                          })
+                          .catch(error => {
+                            console.error("Error:", error);
+                            document.getElementById("contact-status").innerText = "❌ Error occurred while sending the request.";
                           });
-                      
-                          let data = await response.json();
-                          if (data.status === "success") {
-                            statusDiv.innerText = "Your message has been sent successfully.";
-                            statusDiv.style.color = "green";
-                            this.reset();
-                          } else {
-                            statusDiv.innerText = "Error: " + (data.message || "Failed to send message.");
-                            statusDiv.style.color = "red";
-                          }
-                        } catch (error) {
-                          statusDiv.innerText = "Network error. Please try again.";
-                          statusDiv.style.color = "red";
                         }
-                      });
+                      
+                        document.getElementById("contact-form").addEventListener("submit", function(event) {
+                          event.preventDefault();
+                          sendContactRequest();
+                        });
                       </script>
+                      
+                      
         </div>
 
       </div>
