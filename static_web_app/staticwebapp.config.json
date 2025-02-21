@@ -1,12 +1,14 @@
 {
-  "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/css/*", "/js/*", "/images/*", "/vendor/*"]
-  },
+"navigationFallback": {
+  "rewrite": "/index.html",
+  "exclude": ["/assets/*", "/css/*", "/js/*", "/images/*", "/vendor/*", "/services", "/about", "/contact", "/contact.html"]
+},
   "routes": [
     {
       "route": "/",
-      "serve": "/index.html"
+      "serve": "/index.html",
+      "exclude": ["/services", "/about", "/contact", "/contact.html"]
+      
     },
     {
       "route": "/services",
