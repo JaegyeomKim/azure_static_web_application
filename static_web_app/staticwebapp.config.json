@@ -17,6 +17,18 @@
       "serve": "/contact.html"
     },
     {
+      "route": "/services.html",
+      "serve": "/services.html"
+    },
+    {
+      "route": "/about.html",
+      "serve": "/about.html"
+    },
+    {
+      "route": "/contact.html",
+      "serve": "/contact.html"
+    },
+    {
       "route": "/assets/*",
       "serve": "/assets/"
     },
@@ -38,7 +50,8 @@
     },
     {
       "route": "/*",
-      "rewrite": "/index.html"
+      "rewrite": "/index.html",
+      "exclude": ["/services", "/about", "/contact", "/services.html", "/about.html", "/contact.html"]
     }
   ],
   "mimeTypes": {
