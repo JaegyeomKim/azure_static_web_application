@@ -145,19 +145,19 @@
                       </form>
                       
                       <script>
-                        // Google Apps Script 웹앱 URL로 수정
+                        // Google Apps Script 웹앱 URL (배포 후 받은 URL로 교체)
                         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPttEotWnjRYVJMNpxCe90fD9iVC3xFmA6ksnHwSeT1k3V-IZJyG9lQHTAJZpZEUYksQ/exec";
-                    
+                        
                         function sendContactRequest() {
                           let name = document.getElementById("contact-name").value.trim();
                           let email = document.getElementById("contact-email").value.trim();
                           let message = document.getElementById("contact-message").value.trim();
-                    
+                        
                           if (!name || !email || !message) {
                             alert("Please fill in all required fields.");
                             return;
                           }
-                    
+                        
                           // Contact 폼 데이터 구성 (phone은 빈 값)
                           let formData = {
                             category: "Contact",
@@ -166,7 +166,7 @@
                             phone: "",
                             message: message
                           };
-                    
+                        
                           fetch(APPS_SCRIPT_URL, {
                             method: "POST",
                             mode: "no-cors", // CORS 우회를 위한 옵션 추가
@@ -183,13 +183,14 @@
                             document.getElementById("contact-status").innerText = "❌ Error occurred while sending the request. Please contact to work.kaykim@gmail.com";
                           });
                         }
-                    
+                        
                         document.getElementById("contact-form").addEventListener("submit", function(event) {
                           event.preventDefault();
                           sendContactRequest();
                         });
                       </script>
                     </div>
+                    
                     
 
       </div>
