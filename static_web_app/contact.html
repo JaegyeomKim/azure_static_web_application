@@ -135,9 +135,6 @@
                             <input type="email" id="contact-email" name="email" class="form-control" placeholder="Your Email" required>
                           </div>
                           <div class="col-md-12">
-                            <input type="text" id="contact-subject" name="subject" class="form-control" placeholder="Subject" required>
-                          </div>
-                          <div class="col-md-12">
                             <textarea id="contact-message" class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
                           </div>
                           <div class="col-md-12 text-center">
@@ -154,10 +151,9 @@
                         function sendContactRequest() {
                           let name = document.getElementById("contact-name").value.trim();
                           let email = document.getElementById("contact-email").value.trim();
-                          let subject = document.getElementById("contact-subject").value.trim();
                           let message = document.getElementById("contact-message").value.trim();
                     
-                          if (!name || !email || !subject || !message) {
+                          if (!name || !email || !message) {
                             alert("Please fill in all required fields.");
                             return;
                           }
@@ -168,7 +164,6 @@
                             name: name,
                             email: email,
                             phone: "",
-                            subject: subject,
                             message: message
                           };
                     
