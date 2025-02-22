@@ -140,14 +140,12 @@
             </div>
           </div>
           
-          
-
+          <!-- Start Quote Form -->
           <div class="col-lg-5" data-aos="zoom-out" data-aos-delay="200">
-            
             <form id="quote-form" class="php-email-form">
               <h3>Request a Business Quote</h3>
               <p>Contact us to explore partnership opportunities, request pricing details, or discuss your sourcing needs. We will get back to you as soon as possible.</p>
-            
+          
               <div class="row gy-3">
                 <div class="col-12">
                   <input type="text" id="quote-name" name="name" class="form-control" placeholder="Your Name" required>
@@ -162,36 +160,38 @@
                   <textarea id="quote-message" class="form-control" name="message" rows="6" placeholder="Tell us about your business needs" required></textarea>
                 </div>
                 <div class="col-12 text-center">
-                  <div id="quote-status"></div> <!-- ✅ Fixed ID -->
+                  <div id="quote-status"></div> <!-- 상태 메시지 표시 영역 -->
                   <button type="submit" id="quote-submit-btn">Submit Request</button>
                 </div>
               </div>
             </form>
-            
+          
             <script>
-              const AZURE_FUNCTION_URL = "https://azurefunctioncompanywebapp.azurewebsites.net/api/EmailTrigger";
-            
+              // Google Apps Script 웹앱 URL (배포 후 발급받은 URL로 교체)
+              const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPttEotWnjRYVJMNpxCe90fD9iVC3xFmA6ksnHwSeT1k3V-IZJyG9lQHTAJZpZEUYksQ/exec";
+          
               function sendQuoteRequest() {
                 let name = document.getElementById("quote-name").value.trim();
                 let email = document.getElementById("quote-email").value.trim();
                 let phone = document.getElementById("quote-phone").value.trim();
                 let message = document.getElementById("quote-message").value.trim();
-            
-                if (!name || !email || !phone || !message) {
+          
+                // 필수 항목 체크 (필요에 따라 조건 조정)
+                if (!name || !email || !message) {
                   alert("Please fill in all required fields.");
                   return;
                 }
-            
+          
+                // 전송할 데이터 구성 (Category는 "Quote")
                 let formData = {
                   category: "Quote",
                   name: name,
                   email: email,
                   phone: phone,
-                  subject: "",  
                   message: message
                 };
-            
-                fetch(AZURE_FUNCTION_URL, {
+          
+                fetch(APPS_SCRIPT_URL, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(formData)
@@ -199,24 +199,22 @@
                 .then(response => response.text())
                 .then(data => {
                   console.log("Server Response:", data);
-                  document.getElementById("quote-status").innerText = "✅ Quote request sent successfully!";
+                  document.getElementById("quote-status").innerText = "✅ Contact request sent successfully!";
                 })
                 .catch(error => {
                   console.error("Error:", error);
-                  document.getElementById("quote-status").innerText = "❌ Error occurred while sending the request.";
+                  document.getElementById("quote-status").innerText = "❌ Error occurred while sending the request. Please contact to work.kaykim@gmail.com";
                 });
               }
-            
+          
               document.getElementById("quote-form").addEventListener("submit", function(event) {
                 event.preventDefault();
                 sendQuoteRequest();
               });
             </script>
-            
+          </div>
+          <!-- End Quote Form -->
           
-
-          
-          </div><!-- End Quote Form -->
 
         </div>
 

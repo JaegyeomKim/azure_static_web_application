@@ -141,35 +141,38 @@
                             <textarea id="contact-message" class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
                           </div>
                           <div class="col-md-12 text-center">
-                            <div id="contact-status"></div> <!-- ✅ Fixed ID -->
+                            <div id="contact-status"></div> <!-- 상태 메시지 영역 -->
                             <button type="submit">Send Message</button>
                           </div>
                         </div>
                       </form>
                       
                       <script>
-                        const AZURE_FUNCTION_URL = "https://azurefunctioncompanywebapp.azurewebsites.net/api/EmailTrigger";
+                        // Google Apps Script 웹앱 URL로 수정
+                        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPttEotWnjRYVJMNpxCe90fD9iVC3xFmA6ksnHwSeT1k3V-IZJyG9lQHTAJZpZEUYksQ/exec";
+                    
                         function sendContactRequest() {
                           let name = document.getElementById("contact-name").value.trim();
                           let email = document.getElementById("contact-email").value.trim();
                           let subject = document.getElementById("contact-subject").value.trim();
                           let message = document.getElementById("contact-message").value.trim();
-                      
+                    
                           if (!name || !email || !subject || !message) {
                             alert("Please fill in all required fields.");
                             return;
                           }
-                      
+                    
+                          // Contact 폼 데이터 구성 (phone은 빈 값)
                           let formData = {
                             category: "Contact",
                             name: name,
                             email: email,
-                            phone: "",  
+                            phone: "",
                             subject: subject,
                             message: message
                           };
-                      
-                          fetch(AZURE_FUNCTION_URL, {
+                    
+                          fetch(APPS_SCRIPT_URL, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(formData)
@@ -181,18 +184,17 @@
                           })
                           .catch(error => {
                             console.error("Error:", error);
-                            document.getElementById("contact-status").innerText = "❌ Error occurred while sending the request.";
+                            document.getElementById("contact-status").innerText = "❌ Error occurred while sending the request. Please contact to work.kaykim@gmail.com";
                           });
                         }
-                      
+                    
                         document.getElementById("contact-form").addEventListener("submit", function(event) {
                           event.preventDefault();
                           sendContactRequest();
                         });
                       </script>
-                      
-                      
-        </div>
+                    </div>
+                    
 
       </div>
 
