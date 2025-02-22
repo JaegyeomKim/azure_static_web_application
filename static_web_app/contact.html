@@ -124,7 +124,6 @@
 
 
 
-                    
                     <div class="col-lg-6">
                       <form id="contact-form" class="php-email-form">
                         <div class="row gy-4">
@@ -139,7 +138,7 @@
                           </div>
                           <div class="col-md-12 text-center">
                             <div id="contact-status"></div> <!-- 상태 메시지 영역 -->
-                            <button type="submit">Send Message</button>
+                            <button type="submit" id="contact-submit-btn">Send Message</button>
                           </div>
                         </div>
                       </form>
@@ -149,12 +148,24 @@
                         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPttEotWnjRYVJMNpxCe90fD9iVC3xFmA6ksnHwSeT1k3V-IZJyG9lQHTAJZpZEUYksQ/exec";
                         
                         function sendContactRequest() {
+                          // 제출 버튼 요소 가져오기
+                          let submitBtn = document.getElementById("contact-submit-btn");
+                          
+                          // 이미 요청 진행 중이면 중복 제출 방지
+                          if (submitBtn.disabled) return;
+                          
+                          // 제출 버튼 비활성화 및 텍스트 변경
+                          submitBtn.disabled = true;
+                          submitBtn.innerText = "Sending...";
+                          
                           let name = document.getElementById("contact-name").value.trim();
                           let email = document.getElementById("contact-email").value.trim();
                           let message = document.getElementById("contact-message").value.trim();
                         
                           if (!name || !email || !message) {
                             alert("Please fill in all required fields.");
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = "Send Message";
                             return;
                           }
                         
@@ -177,10 +188,16 @@
                           .then(data => {
                             console.log("Server Response:", data);
                             document.getElementById("contact-status").innerText = "✅ Contact request sent successfully!";
+                            // 요청 완료 후 버튼 재활성화
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = "Send Message";
                           })
                           .catch(error => {
                             console.error("Error:", error);
                             document.getElementById("contact-status").innerText = "❌ Error occurred while sending the request. Please contact to work.kaykim@gmail.com";
+                            // 에러 발생 시 버튼 재활성화
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = "Send Message";
                           });
                         }
                         
@@ -190,6 +207,7 @@
                         });
                       </script>
                     </div>
+                    
                     
                     
 

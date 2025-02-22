@@ -171,6 +171,14 @@
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPttEotWnjRYVJMNpxCe90fD9iVC3xFmA6ksnHwSeT1k3V-IZJyG9lQHTAJZpZEUYksQ/exec";
 
     function sendQuoteRequest() {
+      let submitBtn = document.getElementById("quote-submit-btn");
+      // 이미 요청 진행 중이면 중복 제출 방지
+      if (submitBtn.disabled) return;
+
+      // 제출 버튼 비활성화 및 텍스트 변경
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Sending...";
+
       let name = document.getElementById("quote-name").value.trim();
       let email = document.getElementById("quote-email").value.trim();
       let phone = document.getElementById("quote-phone").value.trim();
@@ -179,6 +187,8 @@
       // 필수 항목 체크 (여기서는 name, email, message가 필수입니다)
       if (!name || !email || !message) {
         alert("Please fill in all required fields.");
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Request";
         return;
       }
 
@@ -201,10 +211,14 @@
       .then(data => {
         console.log("Server Response:", data);
         document.getElementById("quote-status").innerText = "✅ Contact request sent successfully!";
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Request";
       })
       .catch(error => {
         console.error("Error:", error);
         document.getElementById("quote-status").innerText = "❌ Error occurred while sending the request. Please contact to work.kaykim@gmail.com";
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Request";
       });
     }
 
@@ -215,6 +229,7 @@
   </script>
 </div>
 <!-- End Quote Form -->
+
 
           
 
